@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple Travel Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f5f8fa;
+      color: #333;
+    }
+    header {
+      background: #0077cc;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #005fa3;
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    section {
+      margin-bottom: 2rem;
+    }
+    h2 {
+      border-bottom: 2px solid #0077cc;
+      padding-bottom: 0.3rem;
+    }
+    input, select, textarea, button {
+      display: block;
+      margin: 0.5rem 0 1rem 0;
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    button {
+      background: #0077cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+      max-width: 150px;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+    .packages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .package {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 1rem;
+      flex: 1 1 250px;
+      background: #f9f9f9;
+    }
+    .package h3 {
+      margin-top: 0;
+    }
+    .reviews {
+      background: #eef6fc;
+      padding: 1rem;
+      border-radius: 5px;
+    }
+    .review {
+      margin-bottom: 1rem;
+      border-bottom: 1px dotted #ccc;
+      padding-bottom: 0.5rem;
+    }
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 5px;
+    }
+    .confirmation {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 5px;
+      display: none;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Simple Travel Booking System</h1>
+</header>
+
+<nav>
+  <a href="#login">Login / Signup</a>
+  <a href="#packages">Browse Packages</a>
+  <a href="#booking">Book Flight & Hotel</a>
+  <a href="#payment">Payment</a>
+  <a href="#reviews">Reviews</a>
+  <a href="#map">Map</a>
+  <a href="#cancel">Cancel / Refund</a>
+</nav>
+
+<main>
+
+  <!-- User Login/Signup -->
+  <section id="login">
+    <h2>User Login / Signup</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login / Signup</button>
+    </form>
+  </section>
+
+  <!-- Browse Packages -->
+  <section id="packages">
+    <h2>Available Travel Packages</h2>
+    <input type="text" id="searchPackage" placeholder="Search packages..." />
+    <select id="filterPackage">
+      <option value="">Filter by destination</option>
+      <option value="beach">Beach</option>
+      <option value="mountain">Mountain</option>
+      <option value="city">City</option>
+    </select>
+    <div class="packages" id="packageList">
+      <!-- Packages dynamically inserted here -->
+    </div>
+  </section>
+
+  <!-- Flight and Hotel Booking -->
+  <section id="booking">
+    <h2>Flight and Hotel Booking</h2>
+    <form id="bookingForm">
+      <label>Package:</label>
+      <select id="bookingPackage" required>
+        <option value="">Select Package</option>
+      </select>
+
+      <label>Flight Date:</label>
+      <input type="date" id="flightDate" required />
+
+      <label>Hotel Nights:</label>
+      <input type="number" id="hotelNights" min="1" max="30" value="1" required />
+
+      <button type="submit">Book Now</button>
+    </form>
+  </section>
+
+  <!-- Payment -->
+  <section id="payment">
+    <h2>Payment</h2>
+    <form id="paymentForm">
+      <input type="text" placeholder="Cardholder Name" required />
+      <input type="text" placeholder="Card Number" maxlength="16" required />
+      <input type="text" placeholder="Expiry (MM/YY)" maxlength="5" required />
+      <input type="text" placeholder="CVV" maxlength="3" required />
+      <button type="submit">Pay</button>
+    </form>
+  </section>
+
+  <!-- Booking Confirmation Message -->
+  <div class="confirmation" id="confirmationMessage"></div>
+
+  <!-- Customer Reviews -->
+  <section id="reviews">
+    <h2>Customer Reviews</h2>
+    <div class="reviews" id="reviewsList">
+      <!-- Reviews inserted here -->
+    </div>
+    <form id="reviewForm">
+      <textarea id="reviewText" rows="3" placeholder="Write your review..." required></textarea>
+      <button type="submit">Submit Review</button>
+    </form>
+  </section>
+
+  <!-- Interactive Map -->
+  <section id="map">
+    <h2>Explore Destinations Map</h2>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126743.13492988947!2d-74.11808687472572!3d40.7058250369831!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2508f59baf2af%3A0x9989f4fca7741c94!2sNew%20York%20City%2C%20NY!5e0!3m2!1sen!2sus!4v1693244567890!5m2!1sen!2sus" 
+      allowfullscreen="" loading="lazy"></iframe>
+  </section>
+
+  <!-- Cancellation & Refund -->
+  <section id="cancel">
+    <h2>Cancel Booking & Request Refund</h2>
+    <form id="cancelForm">
+      <input type="text" id="bookingId" placeholder="Booking ID" required />
+      <button type="submit">Cancel Booking</button>
+    </form>
+  </section>
+
+</main>
+
+<script>
+  // Dummy data for packages
+  const packages = [
+    { id: 1, name: "Sunny Beach Escape", type: "beach", description: "Enjoy sunny beaches and relax.", price: 499 },
+    { id: 2, name: "Mountain Adventure", type: "mountain", description: "Explore the mountains and hike.", price: 699 },
+    { id: 3, name: "City Lights Tour", type: "city", description: "Experience the vibrant city life.", price: 599 },
+    { id: 4, name: "Tropical Paradise", type: "beach", description: "Tropical islands with crystal waters.", price: 799 },
+  ];
+
+  // Dummy reviews
+  let reviews = [
+    { id: 1, text: "Had a fantastic time on the beach package!" },
+    { id: 2, text: "Mountain adventure was thrilling and well organized." },
+  ];
+
+  // Elements
+  const packageList = document.getElementById('packageList');
+  const bookingPackageSelect = document.getElementById('bookingPackage');
+  const searchInput = document.getElementById('searchPackage');
+  const filterSelect = document.getElementById('filterPackage');
+  const reviewsList = document.getElementById('reviewsList');
+  const confirmationMessage = document.getElementById('confirmationMessage');
+
+  // Show packages function
+  function showPackages(filter = '', search = '') {
+    packageList.innerHTML = '';
+    bookingPackageSelect.innerHTML = '<option value="">Select Package</option>';
+
+    const filtered = packages.filter(p => {
+      const matchesFilter = filter ? p.type === filter : true;
+      const matchesSearch = search ? p.name.toLowerCase().includes(search.toLowerCase()) : true;
+      return matchesFilter && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+      packageList.innerHTML = '<p>No packages found.</p>';
+      return;
+    }
+
+    filtered.forEach(pkg => {
+      const div = document.createElement('div');
+      div.className = 'package';
+      div.innerHTML = `
+        <h3>${pkg.name}</h3>
+        <p>${pkg.description}</p>
+        <p><strong>Price:</strong> $${pkg.price}</p>
+      `;
+      packageList.appendChild(div);
+
+      // Add to booking select
+      const option = document.createElement('option');
+      option.value = pkg.id;
+      option.textContent = pkg.name;
+      bookingPackageSelect.appendChild(option);
+    });
+  }
+
+  // Show reviews
+  function showReviews() {
+    reviewsList.innerHTML = '';
+    if (reviews.length === 0) {
+      reviewsList.innerHTML = '<p>No reviews yet.</p>';
+      return;
+    }
+    reviews.forEach(r => {
+      const div = document.createElement('div');
+      div.className = 'review';
+      div.textContent = r.text;
+      reviewsList.appendChild(div);
+    });
+  }
+
+  // Init
+  showPackages();
+  showReviews();
+
+  // Search/filter handlers
+  searchInput.addEventListener('input', () => {
+    showPackages(filterSelect.value, searchInput.value);
+  });
+  filterSelect.addEventListener('change', () => {
+    showPackages(filterSelect.value, searchInput.value);
+  });
+
+  // Login/signup form
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('User logged in or signed up with email: ' + document.getElementById('email').value);
+  });
+
+  // Booking form
+  document.getElementById('bookingForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const pkgId = bookingPackageSelect.value;
+    if (!pkgId) {
+      alert('Please select a package');
+      return;
+    }
+    const flightDate = document.getElementById('flightDate').value;
+    const nights = document.getElementById('hotelNights').value;
+
+    confirmationMessage.style.display = 'block';
+    confirmationMessage.textContent = `Booking confirmed for package #${pkgId} on ${flightDate} for ${nights} night(s). Check your email for confirmation (simulated).`;
+  });
+
+  // Payment form
+  document.getElementById('paymentForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Payment processed (simulated). Thank you!');
+  });
+
+  // Review form
+  document.getElementById('reviewForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = document.getElementById('reviewText').value.trim();
+    if (!text) {
+      alert('Please enter a review');
+      return;
+    }
+    reviews.push({ id: reviews.length + 1, text });
+    document.getElementById('reviewText').value = '';
+    showReviews();
+  });
+
+  // Cancel booking form
+  document.getElementById('cancelForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const bookingId = document.getElementById('bookingId').value.trim();
+    if (!bookingId) {
+      alert('Please enter your Booking ID');
+      return;
+    }
+    alert(`Booking #${bookingId} has been cancelled. Refund will be processed (simulated).`);
+  });
+</script>
+
+</body>
+</html>
